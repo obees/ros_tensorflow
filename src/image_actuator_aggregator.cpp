@@ -15,7 +15,7 @@ int main(int argc, char **argv)
    * The first NodeHandle constructed will fully initialize this node, and the last
    * NodeHandle destructed will close down the node.
    */
-  ros::NodeHandle n;
+  ros::NodeHandle nh;
 
   /**
    * The subscribe() call is how you tell ROS that you want to receive messages
@@ -33,7 +33,15 @@ int main(int argc, char **argv)
    * away the oldest ones.
    */
 // %Tag(SUBSCRIBER)%
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
+// sub[i] = node.subscribe<sensor_msgs::JointState>(sub_name, 1, boost::bind(&Myclass::callback, this, _1, i));
+
+  ros::Subscriber sub_image = nh.subscribe("raspicam_node/image", 1, process_image);
+  ros::Subscriber sub_image = nh.subscribe("mavros/rc/out", 1, process_image);
+
+
+   # sub_image = rospy.Subscriber("raspicam_node/image", Image, process_image, queue_size=1)
+    # sub_outputs = rospy.Subscriber("mavros/rc/out", RCOut, process_actuator_outputs, queue_size=1)
+
 // %EndTag(SUBSCRIBER)%
 
   /**
@@ -47,7 +55,6 @@ int main(int argc, char **argv)
   ros::Rate rate(30.0);
   while(ros::ok()){
     ros::spinOnce();
-    send_event (TickEvent());
     rate.sleep();
   }
 
