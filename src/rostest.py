@@ -73,6 +73,7 @@ def process_image(image_msg):
 
 def test():
 # Récupérer une image sans header avec Pil
+img_20889.jpg
 from PIL import Image
 infile = open('img_2859.txt','rb')
 data = infile.read()
@@ -80,6 +81,17 @@ infile.close()
 image=Image.frombytes('RGB',(160,120),data,'raw')
 image1 = image.convert('LA')
 image1.save('greyscale.png')
+
+# permet de convertir la PIL.Image.Image en numpy.ndarray qui peut ensuite être utilisé dans opencv
+# img=cv2.cvtColor(pix, cv2.COLOR_BGR2GRAY)
+pix=np.array(image) 
+# pic = image
+# Then, after you make your changes to the array, you should be able to do either pic.putdata(pix) 
+# or create a new image with Image.fromarray(pix).
+
+# switch R & B color channels
+r, g, b = im_rgb.split()
+im_rgb = Image.merge('RGB', (b, g, r))
 
 
 # numpy array
